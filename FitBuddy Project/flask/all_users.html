@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard – FITBUDDY</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-dark text-light">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar glass-nav">
+        <div class="container nav-content">
+            <a href="/" class="brand-logo">
+                <i class="fa-solid fa-bolt brand-icon"></i>
+                <span class="brand-name">FIT<span class="text-accent">BUDDY</span></span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link"><i class="fa-solid fa-house"></i> Home Page</a>
+                <a href="/docs" target="_blank" class="nav-btn glass-btn"><i class="fa-solid fa-code"></i> API Docs (/docs)</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container section-padding">
+
+        <!-- Admin Header Banner -->
+        <div class="glass-card admin-header mb-4">
+            <div class="admin-title-group">
+                <div class="admin-icon">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <div>
+                    <h1>FitBuddy Admin Dashboard</h1>
+                    <p class="text-muted">Manage registered users, inspect generated plans, and review feedback submissions.</p>
+                </div>
+            </div>
+            <div class="admin-stat-card">
+                <span class="stat-num">{{ total_users }}</span>
+                <span class="stat-lbl">Total Profiles Stored</span>
+            </div>
+        </div>
+
+        <!-- Dashboard Controls (Search & Filters) -->
+        <div class="glass-card filter-card mb-4">
+            <div class="filter-grid">
+                <!-- Search -->
+                <div class="form-group search-group">
+                    <label for="searchInput"><i class="fa-solid fa-magnifying-glass"></i> Search User</label>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search by name or user ID...">
+                </div>
+
+                <!-- Goal Filter -->
+                <div class="form-group">
+                    <label for="goalFilter"><i class="fa-solid fa-bullseye"></i> Filter by Goal</label>
+                    <select id="goalFilter" class="form-control">
+                        <option value="ALL">All Goals</option>
+                        <option value="Weight Loss">Weight Loss</option>
+                        <option value="Muscle Gain">Muscle Gain</option>
+                        <option value="General Fitness">General Fitness</option>
+                        <option value="Flexibility">Flexibility</option>
+                        <option value="Endurance">Endurance</option>
+                    </select>
+                </div>
+
+                <!-- Intensity Filter -->
+                <div class="form-group">
+                    <label for="intensityFilter"><i class="fa-solid fa-gauge"></i> Filter by Intensity</label>
+                    <select id="intensityFilter" class="form-control">
+                        <option value="ALL">All Intensities</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Table Container -->
+        <div class="glass-card table-card overflow-x">
+            <table class="admin-table" id="usersTable">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Weight</th>
+                        <th>Goal</th>
+                        <th>Intensity</th>
+                        <th>Created Date</th>
+                        <th>Original Plan</th>
+                        <th>Updated Plan</th>
+                        <th>Feedback</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in users %}
+                    <tr class="user-row" data-goal="{{ u.goal }}" data-intensity="{{ u.intensity }}" data-name="{{ u.name | lower }}" data-userid="{{ u.user_id | lower }}">
+                        <td class="font-mono font-bold text-accent">{{ u.user_id }}</td>
+                        <td class="font-semibold">{{ u.name }}</td>
+                        <td>{{ u.age }} yrs</td>
+                        <td>{{ u.weight }} kg</td>
+                        <td><span class="badge-pill badge-goal">{{ u.goal }}</span></td>
+                        <td><span class="badge-pill badge-intensity">{{ u.intensity }}</span></td>
+                        <td class="text-sm text-muted">{{ u.created_at.strftime('%Y-%m-%d %H:%M') if u.created_at else 'N/A' }}</td>
+                        <td>
+                            {% if u.original_plan %}
+                            <span class="status-indicator status-green"><i class="fa-solid fa-check"></i> Generated</span>
+                            {% else %}
+                            <span class="status-indicator status-gray">None</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if u.updated_plan %}
+                            <span class="status-indicator status-blue"><i class="fa-solid fa-sparkles"></i> Updated</span>
+                            {% else %}
+                            <span class="status-indicator status-gray">Original Only</span>
+                            {% endif %}
+                        </td>
+                        <td class="feedback-cell">
+                            {% if u.feedback %}
+                            <span class="feedback-text" title="{{ u.feedback }}">{{ u.feedback[:40] }}{% if u.feedback|length > 40 %}...{% endif %}</span>
+                            {% else %}
+                            <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="/result/{{ u.user_id }}" class="btn btn-primary btn-xs">
+                                <i class="fa-solid fa-eye"></i> View Plan
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="11" class="text-center py-4 text-muted">
+                            <i class="fa-regular fa-folder-open fa-2x mb-2"></i><br>
+                            No users registered yet. Generate a fitness plan on the home page to get started!
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

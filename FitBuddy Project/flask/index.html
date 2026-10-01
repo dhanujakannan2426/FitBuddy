@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FITBUDDY – AI Fitness Plan Generator</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-dark text-light">
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner-container">
+            <div class="pulse-ring"></div>
+            <div class="fitness-spinner">
+                <i class="fa-solid fa-dumbbell fa-bounce"></i>
+            </div>
+            <h3>Generating Your Personal Fitness Plan...</h3>
+            <p>Our AI is crafting a custom 7-day routine and nutrition guide tailored specifically for you.</p>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar glass-nav">
+        <div class="container nav-content">
+            <a href="/" class="brand-logo">
+                <i class="fa-solid fa-bolt brand-icon"></i>
+                <span class="brand-name">FIT<span class="text-accent">BUDDY</span></span>
+            </a>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#generate" class="nav-link">Create Plan</a>
+                <a href="/view-all-users" class="nav-btn glass-btn">Admin Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-bg-glow"></div>
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <div class="badge-tag">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Powered by Google Gemini AI
+                </div>
+                <h1 class="hero-title">Build Your Personalized <span class="gradient-text">Fitness Journey</span></h1>
+                <p class="hero-subtitle">Let AI create a workout plan tailored to your goals, intensity and lifestyle.</p>
+                <div class="hero-cta-group">
+                    <a href="#generate" class="btn btn-primary btn-lg pulse-glow">
+                        <i class="fa-solid fa-dumbbell"></i> Create My Fitness Plan
+                    </a>
+                    <a href="#features" class="btn btn-secondary btn-lg">
+                        Learn More <i class="fa-solid fa-arrow-down"></i>
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Personalized</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">7-Day</span>
+                        <span class="stat-label">Structured Plans</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">Instant</span>
+                        <span class="stat-label">AI Adaptation</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-card-preview">
+                <div class="glass-card preview-card">
+                    <div class="card-header-badge">
+                        <i class="fa-solid fa-heart-pulse"></i> Sample Routine
+                    </div>
+                    <h3>Day 1: Full Body HIIT</h3>
+                    <p class="card-meta"><i class="fa-regular fa-clock"></i> 45 Mins • High Intensity</p>
+                    <div class="preview-exercises">
+                        <div class="ex-pill"><i class="fa-solid fa-check"></i> Goblet Squats (4 Sets)</div>
+                        <div class="ex-pill"><i class="fa-solid fa-check"></i> Push-up Circuits</div>
+                        <div class="ex-pill"><i class="fa-solid fa-check"></i> Mountain Climbers</div>
+                        <div class="ex-pill"><i class="fa-solid fa-check"></i> Core Plank Finisher</div>
+                    </div>
+                    <div class="card-nutrition-teaser">
+                        <i class="fa-solid fa-apple-whole text-accent"></i> Includes Nutrition & Recovery Advice
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section-padding">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Why Choose <span class="gradient-text">FitBuddy</span>?</h2>
+                <p class="section-subtitle">Smart algorithms paired with exercise science to transform your training.</p>
+            </div>
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="glass-card feature-card">
+                    <div class="feature-icon icon-green">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <h3>1. AI Workout Plans</h3>
+                    <p>Receive a structured 7-day workout routine complete with warm-ups, exercises, sets, reps, and cooldowns tuned to your exact metrics.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="glass-card feature-card">
+                    <div class="feature-icon icon-cyan">
+                        <i class="fa-solid fa-carrot"></i>
+                    </div>
+                    <h3>2. Smart Nutrition Tips</h3>
+                    <p>Get actionable, goal-aligned nutritional and recovery advice powered by Gemini Flash to maximize muscle repair and fat loss.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="glass-card feature-card">
+                    <div class="feature-icon icon-blue">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <h3>3. Adaptive Feedback</h3>
+                    <p>Want more cardio? Shorter sessions? More rest days? Submit feedback and watch your plan instantly adapt to your lifestyle.</p>
+                </div>
+                <!-- Feature 4 -->
+                <div class="glass-card feature-card">
+                    <div class="feature-icon icon-purple">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <h3>4. Progress Tracking</h3>
+                    <p>All your generated plans and user profiles are securely stored in SQLite, accessible anytime via your unique User ID.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section id="generate" class="section-padding form-section">
+        <div class="container container-sm">
+            <div class="glass-card form-card">
+                <div class="form-header text-center">
+                    <div class="form-icon-header">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <h2>Create Your Custom Plan</h2>
+                    <p>Fill in your details below to generate your 7-day AI workout plan.</p>
+                </div>
+
+                {% if error_msg %}
+                <div class="alert alert-error">
+                    <i class="fa-solid fa-triangle-exclamation"></i> {{ error_msg }}
+                </div>
+                {% endif %}
+
+                <form id="workoutForm" action="/generate-workout" method="POST" class="fitness-form" novalidate>
+                    <div class="form-grid">
+                        <!-- Full Name -->
+                        <div class="form-group">
+                            <label for="name"><i class="fa-solid fa-user"></i> Full Name</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="e.g. Alex Johnson" required>
+                            <div class="field-error" id="nameError"></div>
+                        </div>
+
+                        <!-- User ID -->
+                        <div class="form-group">
+                            <label for="user_id"><i class="fa-solid fa-id-badge"></i> User ID / Username</label>
+                            <input type="text" id="user_id" name="user_id" class="form-control" placeholder="e.g. alex_j99" required>
+                            <div class="field-error" id="userIdError"></div>
+                        </div>
+
+                        <!-- Age -->
+                        <div class="form-group">
+                            <label for="age"><i class="fa-solid fa-cake-candles"></i> Age (Years)</label>
+                            <input type="number" id="age" name="age" class="form-control" placeholder="e.g. 28" min="1" max="120" required>
+                            <div class="field-error" id="ageError"></div>
+                        </div>
+
+                        <!-- Weight -->
+                        <div class="form-group">
+                            <label for="weight"><i class="fa-solid fa-weight-scale"></i> Weight (kg)</label>
+                            <input type="number" step="0.1" id="weight" name="weight" class="form-control" placeholder="e.g. 74.5" min="1" max="500" required>
+                            <div class="field-error" id="weightError"></div>
+                        </div>
+
+                        <!-- Fitness Goal -->
+                        <div class="form-group form-group-full">
+                            <label for="goal"><i class="fa-solid fa-bullseye"></i> Fitness Goal</label>
+                            <select id="goal" name="goal" class="form-control" required>
+                                <option value="" disabled selected>Select your primary goal...</option>
+                                {% for g in goals %}
+                                <option value="{{ g }}">{{ g }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="field-error" id="goalError"></div>
+                        </div>
+
+                        <!-- Workout Intensity -->
+                        <div class="form-group form-group-full">
+                            <label for="intensity"><i class="fa-solid fa-gauge-high"></i> Workout Intensity</label>
+                            <select id="intensity" name="intensity" class="form-control" required>
+                                <option value="" disabled selected>Select preferred intensity level...</option>
+                                {% for i in intensities %}
+                                <option value="{{ i }}">{{ i }} Intensity</option>
+                                {% endfor %}
+                            </select>
+                            <div class="field-error" id="intensityError"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-submit">
+                        <button type="submit" id="submitBtn" class="btn btn-primary btn-block btn-lg">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Generate My Plan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer border-top">
+        <div class="container footer-content text-center">
+            <p>&copy; 2026 <strong>FITBUDDY</strong> – AI Fitness Plan Generator. Powered by Google Gemini API.</p>
+            <p class="disclaimer-text"><small>Disclaimer: Fitness plans are for general wellness information and are not a substitute for professional medical advice.</small></p>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

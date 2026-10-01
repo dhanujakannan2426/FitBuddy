@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Fitness Plan – FITBUDDY</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-dark text-light">
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner-container">
+            <div class="pulse-ring"></div>
+            <div class="fitness-spinner">
+                <i class="fa-solid fa-rotate fa-spin"></i>
+            </div>
+            <h3>Updating Your Workout Plan...</h3>
+            <p>Gemini AI is analyzing your feedback and re-crafting your routine.</p>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar glass-nav">
+        <div class="container nav-content">
+            <a href="/" class="brand-logo">
+                <i class="fa-solid fa-bolt brand-icon"></i>
+                <span class="brand-name">FIT<span class="text-accent">BUDDY</span></span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="/view-all-users" class="nav-btn glass-btn">Admin Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="container section-padding">
+
+        <!-- Welcome Banner -->
+        <div class="welcome-header glass-card">
+            <div class="welcome-badge">
+                <i class="fa-solid fa-circle-check text-accent"></i> Plan Successfully Generated
+            </div>
+            <h1 class="welcome-title">Welcome, <span class="gradient-text">{{ user.name }}</span>!</h1>
+            <p class="welcome-sub">Here is your tailored 7-Day Workout Routine & Nutrition Strategy.</p>
+
+            {% if has_updated_plan %}
+            <div class="alert alert-info mt-3">
+                <i class="fa-solid fa-circle-info"></i> You are viewing your <strong>Updated Plan</strong> incorporating your latest feedback.
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- User Information Summary Card -->
+        <div class="glass-card user-summary-card">
+            <div class="summary-header">
+                <h3><i class="fa-solid fa-id-card text-accent"></i> User Profile Summary</h3>
+                <span class="user-id-tag">ID: {{ user.user_id }}</span>
+            </div>
+            <div class="user-metrics-grid">
+                <div class="metric-item">
+                    <span class="metric-label">Name</span>
+                    <span class="metric-value">{{ user.name }}</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Age</span>
+                    <span class="metric-value">{{ user.age }} yrs</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Weight</span>
+                    <span class="metric-value">{{ user.weight }} kg</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Fitness Goal</span>
+                    <span class="metric-value badge-goal">{{ user.goal }}</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Workout Intensity</span>
+                    <span class="metric-value badge-intensity">{{ user.intensity }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: 7-Day Workout Plan -->
+        <div class="plan-section-header">
+            <h2><i class="fa-solid fa-calendar-days text-accent"></i> Your 7-Day AI Workout Plan</h2>
+            <div class="header-actions">
+                <button onclick="window.print()" class="btn btn-secondary btn-sm">
+                    <i class="fa-solid fa-print"></i> Print / Save PDF
+                </button>
+            </div>
+        </div>
+
+        <div class="days-grid">
+            {% for d in parsed_days %}
+            <div class="glass-card day-card">
+                <div class="day-card-header">
+                    <span class="day-badge">{{ d.day }}</span>
+                    <h3 class="day-title">{{ d.title }}</h3>
+                </div>
+
+                {% if d.focus %}
+                <div class="day-focus">
+                    <i class="fa-solid fa-bullseye"></i> <strong>Focus:</strong> {{ d.focus }}
+                </div>
+                {% endif %}
+
+                {% if d.warmup %}
+                <div class="day-block warmup-block">
+                    <h4><i class="fa-solid fa-fire text-amber"></i> Warm-up</h4>
+                    <p>{{ d.warmup | safe }}</p>
+                </div>
+                {% endif %}
+
+                {% if d.exercises %}
+                <div class="day-block exercises-block">
+                    <h4><i class="fa-solid fa-dumbbell text-accent"></i> Exercises</h4>
+                    <ul class="exercise-list">
+                        {% for ex in d.exercises %}
+                        <li><i class="fa-solid fa-circle-dot text-accent"></i> {{ ex | safe }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                {% if d.cooldown %}
+                <div class="day-block cooldown-block">
+                    <h4><i class="fa-solid fa-spa text-cyan"></i> Cooldown</h4>
+                    <p>{{ d.cooldown | safe }}</p>
+                </div>
+                {% endif %}
+
+                {% if not d.exercises and d.raw_content %}
+                <div class="day-block raw-block">
+                    <p>{{ d.raw_content | safe }}</p>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Section 2: Nutrition & Recovery Tip -->
+        <div class="glass-card nutrition-card mt-4">
+            <div class="card-title-icon">
+                <i class="fa-solid fa-apple-whole text-accent icon-lg"></i>
+                <div>
+                    <h2>Nutrition & Recovery Tip</h2>
+                    <p class="text-muted">Generated specifically for {{ user.goal }} goal</p>
+                </div>
+            </div>
+            <div class="nutrition-content">
+                <p>{{ user.nutrition_tip | safe }}</p>
+            </div>
+        </div>
+
+        <!-- Section 3: Feedback Form -->
+        <div class="glass-card feedback-card mt-4">
+            <div class="card-title-icon">
+                <i class="fa-solid fa-sliders text-cyan icon-lg"></i>
+                <div>
+                    <h2>Want to Improve Your Plan?</h2>
+                    <p class="text-muted">Tell us what to change (e.g. "Add more cardio", "More rest days", "Make it easier", "Include yoga")</p>
+                </div>
+            </div>
+
+            {% if error_msg %}
+            <div class="alert alert-error mt-2">
+                <i class="fa-solid fa-circle-xmark"></i> {{ error_msg }}
+            </div>
+            {% endif %}
+
+            <form id="feedbackForm" action="/submit-feedback" method="POST" class="feedback-form">
+                <input type="hidden" name="user_id" value="{{ user.user_id }}">
+                <div class="form-group">
+                    <textarea name="feedback" id="feedbackText" class="form-control" rows="3" placeholder="e.g. I want more cardio exercises and an extra rest day..." required></textarea>
+                </div>
+                <div class="feedback-submit">
+                    <button type="submit" id="feedbackBtn" class="btn btn-primary">
+                        <i class="fa-solid fa-arrows-rotate"></i> Update My Plan
+                    </button>
+                    <a href="/" class="btn btn-secondary">Create Another Plan</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Disclaimer Footer -->
+        <div class="medical-disclaimer mt-4 text-center">
+            <p><small><i class="fa-solid fa-shield-halved"></i> <strong>Disclaimer</strong>: This AI-generated plan is for general wellness information and is not a substitute for advice from a qualified healthcare professional.</small></p>
+        </div>
+
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

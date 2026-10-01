@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Updated – FITBUDDY</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-dark text-light">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar glass-nav">
+        <div class="container nav-content">
+            <a href="/" class="brand-logo">
+                <i class="fa-solid fa-bolt brand-icon"></i>
+                <span class="brand-name">FIT<span class="text-accent">BUDDY</span></span>
+            </a>
+            <div class="nav-links">
+                <a href="/result/{{ user.user_id }}" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Back to Result</a>
+                <a href="/view-all-users" class="nav-btn glass-btn">Admin Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container section-padding">
+
+        <!-- Notification Banner -->
+        <div class="glass-card success-banner text-center mb-4">
+            <div class="success-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h2>Your plan has been updated based on your feedback.</h2>
+            <p class="feedback-quote">
+                <i class="fa-solid fa-quote-left text-accent"></i> {{ feedback }} <i class="fa-solid fa-quote-right text-accent"></i>
+            </p>
+        </div>
+
+        <!-- Comparison Section Header -->
+        <div class="comparison-header">
+            <h3><i class="fa-solid fa-code-compare text-accent"></i> Plan Comparison View</h3>
+            <p class="text-muted">Compare your original routine against your newly adjusted plan.</p>
+        </div>
+
+        <!-- Side-by-side (Desktop) / Stacked (Mobile) Grid -->
+        <div class="comparison-grid">
+
+            <!-- Left Column: ORIGINAL PLAN -->
+            <div class="comparison-column">
+                <div class="column-header original-header">
+                    <i class="fa-solid fa-clock-rotate-left"></i> ORIGINAL PLAN
+                </div>
+                <div class="column-content">
+                    {% for d in parsed_original %}
+                    <div class="glass-card day-card day-card-sm">
+                        <div class="day-card-header">
+                            <span class="day-badge badge-muted">{{ d.day }}</span>
+                            <h4 class="day-title">{{ d.title }}</h4>
+                        </div>
+
+                        {% if d.focus %}
+                        <p class="text-sm"><strong>Focus:</strong> {{ d.focus }}</p>
+                        {% endif %}
+
+                        {% if d.exercises %}
+                        <ul class="exercise-list text-sm">
+                            {% for ex in d.exercises %}
+                            <li>{{ ex | safe }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+
+                        {% if not d.exercises and d.raw_content %}
+                        <p class="text-sm">{{ d.raw_content | safe }}</p>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Right Column: UPDATED PLAN -->
+            <div class="comparison-column">
+                <div class="column-header updated-header">
+                    <i class="fa-solid fa-sparkles text-accent"></i> UPDATED PLAN
+                </div>
+                <div class="column-content">
+                    {% for d in parsed_updated %}
+                    <div class="glass-card day-card day-card-sm border-accent">
+                        <div class="day-card-header">
+                            <span class="day-badge badge-accent">{{ d.day }}</span>
+                            <h4 class="day-title">{{ d.title }}</h4>
+                        </div>
+
+                        {% if d.focus %}
+                        <p class="text-sm"><strong>Focus:</strong> {{ d.focus }}</p>
+                        {% endif %}
+
+                        {% if d.exercises %}
+                        <ul class="exercise-list text-sm">
+                            {% for ex in d.exercises %}
+                            <li><i class="fa-solid fa-check text-accent"></i> {{ ex | safe }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+
+                        {% if not d.exercises and d.raw_content %}
+                        <p class="text-sm">{{ d.raw_content | safe }}</p>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Action Controls -->
+        <div class="actions-footer text-center mt-4">
+            <a href="/result/{{ user.user_id }}" class="btn btn-primary btn-lg">
+                <i class="fa-solid fa-square-check"></i> Accept & View Full Plan
+            </a>
+            <a href="/" class="btn btn-secondary btn-lg">
+                <i class="fa-solid fa-house"></i> Back to Home
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
